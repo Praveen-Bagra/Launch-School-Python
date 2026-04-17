@@ -1,0 +1,10 @@
+# 'cat': Can be. Hashable (Immutable) 
+# '(3 ,1, 4, 1, 5, 9, 2 )': Can be. Hashable. (Immutable)
+# ['a', 'b']: Can't be. Unhashable. (mutable)
+# {'a': 1, 'b': 2}: Can't be. Unhashable. (mutable)
+# range(5): Can be. Hashable. (Immutable)
+# {1, 4, 9, 16, 25}: Can't be. Unhashable. (Mutable)
+# 3: Can be. Hashable. (Immutable)
+# 0.0: Can be. Hashable. (Immutable)
+# frozenset({1, 4, 9, 16, 25}): Can be. Hashable. (Immutable)
+  

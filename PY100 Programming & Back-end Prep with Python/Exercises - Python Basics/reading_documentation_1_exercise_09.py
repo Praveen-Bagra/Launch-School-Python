@@ -1,0 +1,5 @@
+print(type(23.5).__name__)
+print(type('Call me Ishmael.').__name__)
+print(type(False).__name__)
+print(type(0).__name__)
+print(type(None).__name__)

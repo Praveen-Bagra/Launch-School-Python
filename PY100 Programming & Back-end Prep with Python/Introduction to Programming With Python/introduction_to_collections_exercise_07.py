@@ -1,0 +1,5 @@
+print(list(range(7))) # prints [0, 1, 2, 3, 4, 5, 6]
+print(list(range(1, 6))) # prints [1, 2, 3, 4, 5]
+print(list(range(3, 15, 4))) # prints [3, 7, 11]
+print(list(range(3, 8, -1))) # prints []
+print(list(range(8, 3, -1))) # prints [8, 7, 6, 5, 4]
