@@ -4,6 +4,11 @@
 # Perform the operation on the two numbers.
 # Print the result to the terminal.
 
+import json
+
+with open('calculator_messages.json', 'r') as file:
+    MESSAGES = json.load(file)
+
 def prompt(message):
     print(f"==> {message}")
 
@@ -15,39 +20,47 @@ def invalid_number(number_str):
 
     return False
 
-prompt('Welcome to the Calculator!')
 
-prompt("What's the first number?")
-number1 = input()
+prompt(MESSAGES['welcome'])
 
-while invalid_number(number1):
-    prompt("Hmm...that doesn't look like a valid number.")
+while True:
+    prompt("What's the first number?")
     number1 = input()
 
-prompt("What's the second number?")
-number2 = input()
+    while invalid_number(number1):
+        prompt(MESSAGES['invalid_number'])
+        number1 = input()
 
-while invalid_number(number2):
-    prompt("Hmm...that doesn't look like a valid number.")
+    prompt("What's the second number?")
     number2 = input()
 
+    while invalid_number(number2):
+        prompt(MESSAGES['invalid_number'])
+        number2 = input()
 
-prompt("""What operation would you like to perform?
-1) Add 2) Subtract 3) Multiply 4) Divide""")
-operation = input()
 
-while operation not in ["1", "2", "3", "4"]:
-    prompt('You must choose 1, 2, 3, or 4')
+    prompt("""What operation would you like to perform?
+    1) Add 2)Subtract 3)Multiply 4) Divide""")
+
     operation = input()
 
-match operation:
-    case '1':
-        output = int(number1) + int(number2)
-    case '2':
-        output =int(number1) - int(number2)
-    case '3':
-        output = int(number1) * int(number2)
-    case '4':
-        output = int(number1) / int(number2)
+    while operation not in ["1", "2", "3", "4"]:
+        prompt("You must choose 1, 2, 3, or 4")
+        operation = input()
 
-prompt(f"The result is {output}")
+    match operation:
+        case '1':
+            output = int(number1) + int(number2)
+        case '2':
+            output =int(number1) - int(number2)
+        case '3':
+            output = int(number1) * int(number2)
+        case '4':
+            output = int(number1) / int(number2)
+
+    prompt(f"The result is {output}")
+
+    prompt("Would you like to perform another operation? (y/n) ")
+    answer = input()
+    if answer and answer[0].lower() != 'y':
+        break
