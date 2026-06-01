@@ -1,6 +1,8 @@
 class GoodDog:
 
-    def __init__(self):
-        print('This object was initialized')
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
 
-sparky = GoodDog() # This object was initialized!
+sparky = GoodDog('Sparky', 5)
+rover = GoodDog('Rover', 3)
