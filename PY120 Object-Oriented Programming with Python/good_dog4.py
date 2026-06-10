@@ -25,6 +25,9 @@ class GoodDog:
             raise ValueError("Age can't be negative.")
         self._age = new_age
 
+    def age_12(self):
+        return self.age()
+
 sparky = GoodDog('Sparky', 5)
 print(sparky.name())
 print(sparky.age())
@@ -35,4 +38,5 @@ print(sparky.age())
 
 # sparky.set_name(42)
 
-sparky.set_age(-1)
+# sparky.set_age(-1)
+print(sparky.age_12())
