@@ -6,12 +6,7 @@ class Vehicle:
 class Truck(Vehicle):
 
     def start_engine(self, speed):
-        if speed == 'fast':
-            return 'Ready to go! Drive fast, please!'
-        elif speed == 'slow':
-            return 'Ready to go! Drive slow, please!'
-        else:
-            return 'Not valid speed.'
+        return super().start_engine() + f' Drive {speed}, please!'
 
 # Comments show expected output
 truck1 = Truck()
