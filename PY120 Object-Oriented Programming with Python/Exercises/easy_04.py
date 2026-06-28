@@ -13,7 +13,19 @@ class Pet:
         return sef._age
 
 class Cat(Pet):
-    pass
+    
+    def __init__(self, name, age, color):
+        super().__init__(name, age)
+        self._color = color
+
+    @property
+    def color(self):
+        return self._color
+
+    @property
+    def info(self):
+        return (f'My cat {self.name} is {self._age} years old '
+                f'and has {self._color} fur.')
 
 cocoa = Cat('Cocoa', 3, 'black')
 cheddar = Cat('Cheddar', 4, 'yellow and white')
