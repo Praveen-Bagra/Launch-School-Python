@@ -15,7 +15,6 @@ class Cat(Animal):
 
     def __init__(self, name, age, status):
         super().__init__(name, age, 4, 'cat', status)
-        # legs set to 4 and species set to 'cat' for all cats.
         
     def introduce(self):
         return super().introduce() + ' Meow meow!'
