@@ -9,7 +9,8 @@ class Bird(Animal):
     pass
 
 cat1 = Cat('Black')
-print(cat1.get_color())
+# print(cat1.get_color())
 
 # [Cat, Animal, Object]
-print([cl])
+print([cl.__name__ for cl in Cat.__mro__])
+print(Cat.__mro__)
