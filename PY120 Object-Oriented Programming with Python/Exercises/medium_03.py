@@ -1,54 +1,80 @@
-import random 
+import random
+import math
 
 class GuessingGame:
-    def __init__(self):
-        self._winning_number = None
-        self._remaining_guesses = None
-        self._guess = None
+
+    RESULT_OF_GUESS_MESSAGE = {
+        'high':  "Your number is too high.",
+        'low':   "Your number is too low.",
+        'match': "That's the number!",
+    }
+
+    WIN_OR_LOSE = {
+        'high':  'lose',
+        'low':   'lose',
+        'match': 'win',
+    }
+
+    RESULT_OF_GAME_MESSAGE = {
+        'win':  "You won!",
+        'lose': "You have no more guesses. You lost!",
+    }
+
+    def __init__(self, low, high):
+        self.secret_number = None
+        self.max_guesses = int(math.log2(high - low + 1)) + 1
+        self.guesses_remaining = range(self.max_guesses, 0, -1) 
+        self.secret_range = range(low, high + 1)
 
     def play(self):
-        self._winning_number = random.randint(1, 100)
-        self._remaining_guesses = 7
+        self.reset()
+        game_result = self.play_game()
+        self.show_game_end_message(game_result)
 
-        while self._remaining_guesses > 0:
-            self._display_remaining_guesses_prompt()
-            self._guess = int(input("Enter a number between 1 and 100: "))
-            self._validate_guess()
-            self._display_guess_msg()
+    def reset(self):
+        self.secret_number = random.choice(self.secret_range)
 
-            if self._guess == self._winning_number:
-                return
+    def play_game(self):
+        for remaining_guesses in self.guesses_remaining:
+            self.show_guesses_remaining(remaining_guesses)
+            result = self.check_guess(self.get_one_guess())
+            print(self.__class__.RESULT_OF_GUESS_MESSAGE[result])
+            if result == 'match':
+                return self.__class__.WIN_OR_LOSE[result]
 
-            self._remaining_guesses -= 1
+        return self.__class__.WIN_OR_LOSE[result]
 
-        print("You have no more guesses. You lost!")
+    def show_guesses_remaining(self, remaining):
         print()
-
-    def _display_remaining_guesses_prompt(self):
-        if self._remaining_guesses > 1:
-            print(f"You have {self._remaining_guesses} guesses remaining.")
+        if remaining == 1:
+            print('You have 1 guess remaining.')
         else:
-            print(f"You have {self._remaining_guesses} guess remaining.")
+            print(f"You have {remaining} guesses remaining.")
 
-    def _validate_guess(self):
+    def get_one_guess(self):
         while True:
-            if self._guess in range(1, 101):
-                break
-            self._guess = int(input("Invalid guess. Enter a number between " 
-                            "1 and 100: "))
+            prompt = ("Enter a number between "
+                      f"{self.secret_range[0]} and "
+                      f"{self.secret_range[-1]}: ")
 
-    def _display_guess_msg(self):
-        if self._guess < self._winning_number:
-            print("Your guess is too low.")
-            print()
-        elif self._guess > self._winning_number:
-            print("Your guess is too high.")
-            print()
+            guess = input(prompt)
+            if guess.isdigit():
+                guess = int(guess)
+                if guess in self.secret_range:
+                    return guess
+
+            print("Invalid guess. ", end="")
+
+    def check_guess(self, guess_value):
+        if guess_value == self.secret_number:
+            return 'match'
+        elif guess_value < self.secret_number:
+            return 'low'
         else:
-            print("That's the number!")
-            print()
-            print("You won!")
-            print()
+            return 'high'
 
-game = GuessingGame()
+    def show_game_end_message(self, result):
+        print("\n", self.__class__.RESULT_OF_GAME_MESSAGE[result], sep="")
+
+game = GuessingGame(501, 1500)
 game.play()
