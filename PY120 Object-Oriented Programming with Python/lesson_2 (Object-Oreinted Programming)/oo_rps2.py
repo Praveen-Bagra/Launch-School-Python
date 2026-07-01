@@ -20,6 +20,7 @@
 # - compare
 
 import random
+import os
 
 class StringJoiningMixin:
     def join_with_or(self, seq):
@@ -47,14 +48,16 @@ class Score:
         if not isinstance(other, int):
             raise TypeError("Only integers addition are allowed")
 
-        return self
+        obj = Score()
+        obj._score = self._score + other
+        return obj 
 
     def __iadd__(self, other):
         if not isinstance(other, int):
             raise TypeError("Only integers addition are allowed.")
 
         self._score += other
-        return self._score
+        return self
 
     def __eq__(self, other):
         if not isinstance(other, int):
@@ -143,15 +146,19 @@ class Human(StringJoiningMixin, Player):
         self.move = self.create_move(choice) 
 
 class RPSGame(StringJoiningMixin):
+    GAMES_TO_WIN_MATCH = 5
+
     def __init__(self):
         self._human = Human()
         self._computer = Computer()
         self._result = None
-        self._moves_history = {}
-        self._game_count = 0
+        self._reset_match()
 
     def _display_welcome_message(self):
         print(f'Welcome to {self.capitalize_join_with_space(Player.CHOICES)}!')
+        print(f'The game is played to {RPSGame.GAMES_TO_WIN_MATCH} points. '
+              f'Whosoever wins {RPSGame.GAMES_TO_WIN_MATCH} games first, '
+              f'will win the match.')
 
     def _display_goodbye_message(self):
         print(f'Thanks for playing {self.capitalize_join_with_space(Player.CHOICES)}. Goodbye!')
@@ -164,7 +171,7 @@ class RPSGame(StringJoiningMixin):
             self._result = 'Computer wins!'
             self._computer.score += 1
         else:
-            self._result = "It's a tie" 
+            self._result = "It's a tie!" 
         
 
     def _display_winner_and_score(self):
@@ -187,7 +194,7 @@ class RPSGame(StringJoiningMixin):
 
         return computer_move > human_move
 
-    def _update_and_print_moves_history(self):
+    def _update_history(self):
         self._game_count += 1
         self._moves_history[f'Game {self._game_count:02d}'] = (
         {
@@ -196,36 +203,77 @@ class RPSGame(StringJoiningMixin):
             'Result': self._result
         })
 
+    def _print_history(self):
         for game, details in self._moves_history.items():
             print()
-            print(game)
+            print(game, end=' ==> ')
             for particulars, description in details.items():
-                print(f'{particulars}: {description}') 
+                print(f'{particulars}: {description}', end='. ') 
+        print()
 
-    def _score_reset(self):
+    def _reset_match(self):        
         self._human.reset_score()
         self._computer.reset_score()
+        self._game_count = 0
+        self._moves_history = {}
+
+    def _ready(self):
+        input("Press any key to continue...")
+
+    def _clear_screen(self):
+        os.system('clear')
 
     def play(self):
         self._display_welcome_message()
+        self._ready()
+        self._clear_screen()
 
         while True:
-            self._score_reset()
+            self._reset_match()
+
             while True:
+                self._clear_screen()
                 self._human.choose()
                 self._computer.choose()
+                self._update_score()
                 self._display_winner_and_score()
-                self._update_and_print_moves_history()
-                if self._human.score == 5 or self._computer.score == 5:
-                    break
+                self._update_history()
+
+                if self._human.score == RPSGame.GAMES_TO_WIN_MATCH:
+                    print("You won the match!!!")
+                    if self._history_show():
+                        self._print_history()
+                    break 
+                elif self._computer.score == RPSGame.GAMES_TO_WIN_MATCH:
+                    print("Computer won the match!!!")
+                    if self._history_show():
+                        self._print_history()
+                    break 
+
+                self._ready()
 
             if not self._play_again():
                 break
 
         self._display_goodbye_message()
 
+    def _history_show(self):
+        prompt = "Would you like to see game-wise history of the match? (y/n) "
+        return self._validate_answer(prompt)
+
     def _play_again(self):
-        answer = input("Would you like to play again? (y/n) ")
+        self._ready()
+        self._clear_screen()
+        prompt = "Would you like to play again? (y/n) "
+        return self._validate_answer(prompt)
+
+    def _validate_answer(self, prompt):
+        while True:
+            answer = input(prompt).lower()
+            if answer.startswith('y') or answer.startswith('n'):
+                break 
+            print("Invalid choice.", prompt)
+
         return answer.lower().startswith('y')
 
 RPSGame().play()
