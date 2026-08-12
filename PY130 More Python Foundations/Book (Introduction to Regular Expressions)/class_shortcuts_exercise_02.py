@@ -1,0 +1,1 @@
+# It doesn't count overwrite strings and . includes whitespace as well.

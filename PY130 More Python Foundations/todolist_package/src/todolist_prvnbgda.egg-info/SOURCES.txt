@@ -1,0 +1,11 @@
+LICENSE
+README.md
+pyproject.toml
+src/todolist_prvnbgda/__init__.py
+src/todolist_prvnbgda/todo.py
+src/todolist_prvnbgda/todolist.py
+src/todolist_prvnbgda.egg-info/PKG-INFO
+src/todolist_prvnbgda.egg-info/SOURCES.txt
+src/todolist_prvnbgda.egg-info/dependency_links.txt
+src/todolist_prvnbgda.egg-info/top_level.txt
+tests/test_todolist.py

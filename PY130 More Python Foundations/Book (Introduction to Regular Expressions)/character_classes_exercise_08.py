@@ -1,0 +1,1 @@
+# /abc/i and /[Aa][Bb][Cc]/ are equivalent ragex.

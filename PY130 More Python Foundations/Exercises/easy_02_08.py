@@ -1,0 +1,6 @@
+numbers = [1, 2, 3, 4, 5, 6]
+first, second, *rest = numbers
+
+print(first)
+print(second)
+print(rest)

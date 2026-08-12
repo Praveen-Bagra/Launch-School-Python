@@ -1,0 +1,1 @@
+# Function 2, Function 3, and Function 5 are pure functions.
